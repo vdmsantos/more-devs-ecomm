@@ -21,11 +21,14 @@ class LoginPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Spacer(),
-              Text('+DevsEcomm', style: AppTextStyle.title),
+
+              Image.asset('assets/images/logo.png', height: 120),
+
+              Center(child: Text('+DevsEcomm', style: AppTextStyle.title)),
               Spacer(flex: 2),
               AppTextField(hintText: 'email@dominio.com'),
               SizedBox(height: 16),
-              AppTextField(hintText: '****************'),
+              AppTextField(hintText: '****************', obscureText: true),
               Align(
                 alignment: AlignmentGeometry.centerRight,
                 child: TextButton(
