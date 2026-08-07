@@ -20,14 +20,20 @@ class LoginController {
   bool get isEmailValid => _emailRegex.hasMatch(email.trim());
   bool get isSenhaValid => senha.length >= _senhaMinLength;
 
-  String? get emailError {
-    if (email.isEmpty || isEmailValid) return null;
-    return 'E-mail inválido';
+  String? validateEmail(String? value) {
+    final emailValue = value?.trim() ?? '';
+    if (emailValue.isEmpty) return 'Informe o e-mail';
+    if (!_emailRegex.hasMatch(emailValue)) return 'E-mail inválido';
+    return null;
   }
 
-  String? get senhaError {
-    if (senha.isEmpty || isSenhaValid) return null;
-    return 'A senha deve ter no mínimo $_senhaMinLength caracteres';
+  String? validateSenha(String? value) {
+    final senhaValue = value ?? '';
+    if (senhaValue.isEmpty) return 'Informe a senha';
+    if (senhaValue.length < _senhaMinLength) {
+      return 'A senha deve ter no mínimo $_senhaMinLength caracteres';
+    }
+    return null;
   }
 
   void changeActiveButton() {

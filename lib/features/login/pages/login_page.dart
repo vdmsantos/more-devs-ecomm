@@ -16,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   LoginController loginController = LoginController();
 
   @override
@@ -35,102 +36,109 @@ class _LoginPageState extends State<LoginPage> {
                 MediaQuery.of(context).padding.top,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Spacer(),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Spacer(),
 
-                  Image.asset('assets/images/logo.png', height: 120),
+                    Image.asset('assets/images/logo.png', height: 120),
 
-                  Center(child: Text('+DevsEcomm', style: AppTextStyle.title)),
-                  Spacer(flex: 2),
-                  AppTextField(
-                    hintText: 'email@dominio.com',
-                    errorText: loginController.emailError,
-                    onChanged: (value) {
-                      setState(() {
-                        loginController.setEmail(value);
-                      });
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  AppTextField(
-                    hintText: '****************',
-                    obscureText: true,
-                    errorText: loginController.senhaError,
-                    onChanged: (value) {
-                      setState(() {
-                        loginController.setSenha(value);
-                      });
-                    },
-                  ),
+                    Center(
+                      child: Text('+DevsEcomm', style: AppTextStyle.title),
+                    ),
+                    Spacer(flex: 2),
+                    AppTextField(
+                      hintText: 'email@dominio.com',
+                      validator: loginController.validateEmail,
+                      onChanged: (value) {
+                        setState(() {
+                          loginController.setEmail(value);
+                        });
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    AppTextField(
+                      hintText: '****************',
+                      obscureText: true,
+                      validator: loginController.validateSenha,
+                      onChanged: (value) {
+                        setState(() {
+                          loginController.setSenha(value);
+                        });
+                      },
+                    ),
 
-                  Row(
-                    children: [
-                      AppCheckBox(
-                        value: loginController.isActiveCheckBox,
-                        onChanged: (value) => {
-                          setState(() {
-                            loginController.changeActiveCheckBox();
-                          }),
-                        },
-                      ),
-                      Text('Lembrar-me'),
-                    ],
-                  ),
-                  Align(
-                    alignment: AlignmentGeometry.centerRight,
-                    child: TextButton(
-                      onPressed: () => {},
-                      child: Text(
-                        'Esqueci minha senha',
-                        style: AppTextStyle.smallBlack,
+                    Row(
+                      children: [
+                        AppCheckBox(
+                          value: loginController.isActiveCheckBox,
+                          onChanged: (value) => {
+                            setState(() {
+                              loginController.changeActiveCheckBox();
+                            }),
+                          },
+                        ),
+                        Text('Lembrar-me'),
+                      ],
+                    ),
+                    Align(
+                      alignment: AlignmentGeometry.centerRight,
+                      child: TextButton(
+                        onPressed: () => {},
+                        child: Text(
+                          'Esqueci minha senha',
+                          style: AppTextStyle.smallBlack,
+                        ),
                       ),
                     ),
-                  ),
-                  AppElevatedButton(
-                    label: 'Entrar',
-                    onPressed: loginController.isActiveButton ? () => {} : null,
-                    type: ButtonType.filled,
-                  ),
-                  SizedBox(height: 12),
-                  AppElevatedButton(
-                    label: 'Cadastrar',
-                    onPressed: () => {
-                      Navigator.pushNamed(context, SignupPage.route),
-                    },
-                    type: ButtonType.outlined,
-                  ),
-                  Spacer(flex: 2),
-                  //GestureDetector adiciona métodos de interação com usuario ex: onTap
-                  GestureDetector(
-                    onTap: () {
-                      print('CLIQUEI NA LINHA');
-                    },
-                    //RichText - Aninhar textos e modificar seu alinhamento
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Termos de Serviço ',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          TextSpan(
-                            text: 'e ',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          TextSpan(
-                            text: 'Politicas de Privacidade',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ],
+                    AppElevatedButton(
+                      label: 'Entrar',
+                      onPressed: loginController.isActiveButton
+                          ? () => formKey.currentState?.validate()
+                          : null,
+                      type: ButtonType.filled,
+                    ),
+                    SizedBox(height: 12),
+                    AppElevatedButton(
+                      label: 'Cadastrar',
+                      onPressed: () => {
+                        Navigator.pushNamed(context, SignupPage.route),
+                      },
+                      type: ButtonType.outlined,
+                    ),
+                    Spacer(flex: 2),
+                    //GestureDetector adiciona métodos de interação com usuario ex: onTap
+                    GestureDetector(
+                      onTap: () {
+                        print('CLIQUEI NA LINHA');
+                      },
+                      //RichText - Aninhar textos e modificar seu alinhamento
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Termos de Serviço ',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            TextSpan(
+                              text: 'e ',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            TextSpan(
+                              text: 'Politicas de Privacidade',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Spacer(),
-                ],
+                    Spacer(),
+                  ],
+                ),
               ),
             ),
           ),
