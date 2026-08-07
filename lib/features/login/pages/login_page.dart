@@ -47,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                   Spacer(flex: 2),
                   AppTextField(
                     hintText: 'email@dominio.com',
+                    errorText: loginController.emailError,
                     onChanged: (value) {
                       setState(() {
                         loginController.setEmail(value);
@@ -57,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                   AppTextField(
                     hintText: '****************',
                     obscureText: true,
+                    errorText: loginController.senhaError,
                     onChanged: (value) {
                       setState(() {
                         loginController.setSenha(value);
@@ -89,9 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   AppElevatedButton(
                     label: 'Entrar',
-                    onPressed: loginController.isActiveButton
-                        ? () => {print('cliquei em entrar')}
-                        : null,
+                    onPressed: loginController.isActiveButton ? () => {} : null,
                     type: ButtonType.filled,
                   ),
                   SizedBox(height: 12),
