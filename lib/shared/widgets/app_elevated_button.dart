@@ -11,32 +11,19 @@ class AppElevatedButton extends StatelessWidget {
     this.onPressed,
     required this.type,
     this.backgroundColor,
-    this.isLoading = false,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final ButtonType type;
   final Color? backgroundColor;
-  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: isLoading ? null : onPressed,
+      onPressed: onPressed,
       style: _getStyle(),
-      child: isLoading
-          ? SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: type == ButtonType.filled
-                    ? AppColors.white
-                    : AppColors.black,
-              ),
-            )
-          : Text(label),
+      child: Text(label),
     );
   }
 

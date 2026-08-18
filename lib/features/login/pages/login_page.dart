@@ -24,19 +24,6 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
-  Future<void> _handleLogin() async {
-    //futuramente não será necessário o setState, pois a tela será
-    //reconstruida com o provider
-    setState(() {
-      loginController.isLoading = true;
-    });
-
-    await loginController.login();
-    setState(() {
-      loginController.isLoading = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,9 +94,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   AppElevatedButton(
                     label: 'Entrar',
-                    isLoading: loginController.isLoading,
                     onPressed: loginController.isActiveButton
-                        ? _handleLogin
+                        ? () => {print('cliquei em entrar')}
                         : null,
                     type: ButtonType.filled,
                   ),
