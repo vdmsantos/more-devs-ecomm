@@ -35,6 +35,11 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       loginController.isLoading = false;
     });
+    Navigator.pushNamed(
+      context,
+      '/home',
+      arguments: {'email': loginController.email},
+    );
   }
 
   @override
