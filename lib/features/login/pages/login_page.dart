@@ -1,4 +1,6 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:more_devs_do_zero/features/home/pages/home_page.dart';
 import 'package:more_devs_do_zero/features/login/controllers/login_controller.dart';
 import 'package:more_devs_do_zero/features/recover/pages/recover_page.dart';
 import 'package:more_devs_do_zero/features/signup/pages/signup_page.dart';
@@ -31,14 +33,29 @@ class _LoginPageState extends State<LoginPage> {
         loginController.isLoading = true;
       });
 
-      await loginController.login();
-      print('Executei o login do controller');
-      setState(() {
-        loginController.isLoading = false;
-      });
+      try {
+        final usuario = await loginController.login();
+        setState(() {
+          loginController.isLoading = false;
+        });
+
+        if (!mounted) return;
+        Navigator.pushReplacementNamed(
+          context,
+          HomePage.route,
+          arguments: usuario,
+        );
+      } catch (e) {
+        setState(() {
+          loginController.isLoading = false;
+        });
+        AnimatedSnackBar.material(
+          'Usuário ou senha inválidos',
+          type: AnimatedSnackBarType.error,
+          mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+        ).show(context);
+      }
     }
-    //futuramente não será necessário o setState, pois a tela será
-    //reconstruida com o provider
   }
 
   @override

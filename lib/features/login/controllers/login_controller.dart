@@ -1,3 +1,5 @@
+import 'package:more_devs_do_zero/shared/models/usuario.dart';
+
 class LoginController {
   final RegExp _emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
   final int _caracterMinimoSenha = 6;
@@ -20,7 +22,7 @@ class LoginController {
     if (senha.isEmpty || isSenhaValid) {
       return null;
     }
-    return 'E-mail inválido';
+    return 'Senha inválida';
   }
 
   void setEmail(String emailParam) {
@@ -41,10 +43,16 @@ class LoginController {
     isActiveCheckBox = !isActiveCheckBox;
   }
 
-  Future<void> login() async {
+  Future<Usuario> login() async {
     //Simula chamada da API
     await Future.delayed(const Duration(seconds: 2));
-    print('Login realizado com sucesso');
+
+    if (email == 'vitor6890@gmail.com' && senha == '123456') {
+      //Mock do usuário retornado pela API
+      return Usuario(id: '1', nome: 'Vitor', email: email);
+    } else {
+      throw Exception('Usuário ou senha inválidos');
+    }
   }
 
   String? validateEmail(String? value) {
