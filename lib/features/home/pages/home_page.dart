@@ -5,6 +5,12 @@ import 'package:provider/provider.dart';
 class HomeController extends ChangeNotifier {
   bool isLoading = false;
   String email = '';
+  int visits = 0;
+
+  void registerVisit() {
+    visits++;
+    notifyListeners();
+  }
 
   Future<void> fakeLoading() async {
     isLoading = true;
@@ -26,6 +32,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<HomeController>().registerVisit();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<HomeController>(
@@ -38,9 +50,12 @@ class _HomePageState extends State<HomePage> {
                 'Bem-vindo, ${homeController.email}',
                 style: const TextStyle(fontSize: 24),
               ),
+              Text(
+                'Visitas nesta sessão: ${homeController.visits}',
+                style: const TextStyle(fontSize: 16),
+              ),
               AppElevatedButton(
                 onPressed: () {
-                  homeController.email = 'adiosajsdi';
                   Navigator.pop(context);
                 },
                 isLoading: homeController.isLoading,
