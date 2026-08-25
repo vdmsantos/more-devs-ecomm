@@ -94,7 +94,10 @@ class LoginPage extends StatelessWidget {
                               onPressed: () async {
                                 try {
                                   await controller.handleLogin();
-                                  Navigator.pushNamed(context, HomePage.route);
+                                  Navigator.popAndPushNamed(
+                                    context,
+                                    HomePage.route,
+                                  );
                                 } catch (e) {
                                   //TODO adicionar snack bar
                                 }
