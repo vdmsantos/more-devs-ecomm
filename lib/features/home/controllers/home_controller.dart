@@ -2,48 +2,55 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:more_devs_do_zero/features/home/models/category.dart';
 import 'package:more_devs_do_zero/features/home/models/product.dart';
+import 'package:more_devs_do_zero/shared/view_state.dart';
 
 class HomeController extends ChangeNotifier {
   int currentIndex = 0;
   final CarouselSliderController controller = CarouselSliderController();
 
   List<Product> products = [];
-  bool isProductsLoading = false;
-  bool isCategoriesLoading = false;
+  ViewState productsState = ViewState.loading;
 
   List<Category> categories = [];
+  ViewState categoriesState = ViewState.loading;
 
-  void changeIsProductsLoading(bool value) {
-    isProductsLoading = value;
+  void _changeProductsState(ViewState value) {
+    productsState = value;
     notifyListeners();
   }
 
-  void changeIsCategoriesLoading(bool value) {
-    isCategoriesLoading = value;
+  void _changeCategoriesState(ViewState value) {
+    categoriesState = value;
     notifyListeners();
   }
 
   void getProducts() {
-    changeIsProductsLoading(true);
+    _changeProductsState(ViewState.loading);
     Future.delayed(const Duration(seconds: 5), () {
       // simula uma resposta JSON vinda de uma API
-
-      for (var element in productsJson) {
-        products.add(Product.fromJson(element));
+      try {
+        products = [
+          for (var element in productsJson) Product.fromJson(element),
+        ];
+        _changeProductsState(ViewState.success);
+      } catch (e) {
+        _changeProductsState(ViewState.error);
       }
-      changeIsProductsLoading(false);
     });
   }
 
   void getCategories() {
-    changeIsCategoriesLoading(true);
+    _changeCategoriesState(ViewState.loading);
     Future.delayed(const Duration(seconds: 5), () {
       // simula uma resposta JSON vinda de uma API
-
-      for (var element in categoriesJson) {
-        categories.add(Category.fromJson(element));
+      try {
+        categories = [
+          for (var element in categoriesJson) Category.fromJson(element),
+        ];
+        _changeCategoriesState(ViewState.success);
+      } catch (e) {
+        _changeCategoriesState(ViewState.error);
       }
-      changeIsCategoriesLoading(false);
     });
   }
 

@@ -7,6 +7,7 @@ import 'package:more_devs_do_zero/features/home/models/product.dart';
 import 'package:more_devs_do_zero/features/login/controllers/login_controller.dart';
 import 'package:more_devs_do_zero/shared/app_colors.dart';
 import 'package:more_devs_do_zero/shared/app_text_style.dart';
+import 'package:more_devs_do_zero/shared/view_state.dart';
 import 'package:more_devs_do_zero/shared/widgets/app_elevated_button.dart';
 import 'package:provider/provider.dart';
 
@@ -109,20 +110,47 @@ class _HomeView extends StatelessWidget {
         const SizedBox(height: 8),
         SizedBox(
           height: 108,
-          child: homeController.isCategoriesLoading
-              ? const Center(child: CircularProgressIndicator())
-              : ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: homeController.categories.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 16),
-                  itemBuilder: (context, index) {
-                    return _buildCategoryItem(homeController.categories[index]);
-                  },
-                ),
+          child: switch (homeController.categoriesState) {
+            ViewState.loading => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            ViewState.error => _buildError(
+              'Erro ao carregar categorias',
+              homeController.getCategories,
+            ),
+            ViewState.success => ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: homeController.categories.length,
+              separatorBuilder: (context, index) => const SizedBox(width: 16),
+              itemBuilder: (context, index) {
+                return _buildCategoryItem(homeController.categories[index]);
+              },
+            ),
+          },
         ),
       ],
+    );
+  }
+
+  Widget _buildError(String message, VoidCallback onRetry) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.error_outline, color: AppColors.red),
+          const SizedBox(height: 4),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: AppTextStyle.smallGrey,
+          ),
+          TextButton(
+            onPressed: onRetry,
+            child: Text('Tentar novamente', style: AppTextStyle.smallBlack),
+          ),
+        ],
+      ),
     );
   }
 
@@ -176,18 +204,24 @@ class _HomeView extends StatelessWidget {
         const SizedBox(height: 8),
         SizedBox(
           height: 210,
-          child: homeController.isProductsLoading
-              ? const Center(child: CircularProgressIndicator())
-              : ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: homeController.products.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 16),
-                  itemBuilder: (context, index) {
-                    return _buildProductItem(homeController.products[index]);
-                  },
-                ),
+          child: switch (homeController.productsState) {
+            ViewState.loading => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            ViewState.error => _buildError(
+              'Erro ao carregar produtos',
+              homeController.getProducts,
+            ),
+            ViewState.success => ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: homeController.products.length,
+              separatorBuilder: (context, index) => const SizedBox(width: 16),
+              itemBuilder: (context, index) {
+                return _buildProductItem(homeController.products[index]);
+              },
+            ),
+          },
         ),
       ],
     );
