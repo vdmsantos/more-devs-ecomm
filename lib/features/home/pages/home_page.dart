@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:more_devs_do_zero/features/home/controllers/home_controller.dart';
 import 'package:more_devs_do_zero/features/home/models/carousel_data.dart';
+import 'package:more_devs_do_zero/features/home/models/category.dart';
+import 'package:more_devs_do_zero/features/home/models/product.dart';
 import 'package:more_devs_do_zero/features/login/controllers/login_controller.dart';
 import 'package:more_devs_do_zero/shared/app_colors.dart';
 import 'package:more_devs_do_zero/shared/app_text_style.dart';
@@ -100,7 +102,6 @@ class _HomeView extends StatelessWidget {
   }
 
   Widget _buildCategories(HomeController homeController) {
-    print(homeController.isCategoriesLoading);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

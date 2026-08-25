@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:more_devs_do_zero/features/home/models/category.dart';
+import 'package:more_devs_do_zero/features/home/models/product.dart';
 
 class HomeController extends ChangeNotifier {
   int currentIndex = 0;
@@ -24,32 +26,11 @@ class HomeController extends ChangeNotifier {
   void getProducts() {
     changeIsProductsLoading(true);
     Future.delayed(const Duration(seconds: 5), () {
-      products = [
-        Product(
-          brand: 'Natural da terra',
-          name: 'Rabanete',
-          imageUrl: 'https://i.postimg.cc/8Pt82Qmf/Image-1.png',
-          price: 10.99,
-        ),
-        Product(
-          brand: 'Akatsu',
-          name: 'Acerola',
-          imageUrl: 'https://i.postimg.cc/BQMWr9B8/Image.png',
-          price: 7.99,
-        ),
-        Product(
-          brand: 'Natural da terra',
-          name: 'Cogumelo',
-          imageUrl: 'https://i.postimg.cc/RVP8P1vw/Image-2.png',
-          price: 12.19,
-        ),
-        Product(
-          brand: 'Natural da terra',
-          name: 'Cogumelo',
-          imageUrl: 'https://i.postimg.cc/RVP8P1vw/Image-2.png',
-          price: 12.19,
-        ),
-      ];
+      // simula uma resposta JSON vinda de uma API
+
+      for (var element in productsJson) {
+        products.add(Product.fromJson(element));
+      }
       changeIsProductsLoading(false);
     });
   }
@@ -57,24 +38,11 @@ class HomeController extends ChangeNotifier {
   void getCategories() {
     changeIsCategoriesLoading(true);
     Future.delayed(const Duration(seconds: 5), () {
-      categories = [
-        Category(
-          name: 'Frutas',
-          imageUrl: 'https://i.postimg.cc/SNX7hc6F/Image.png',
-        ),
-        Category(
-          name: 'Verduras',
-          imageUrl: 'https://i.postimg.cc/8PFBSLh2/Image-(1).png',
-        ),
-        Category(
-          name: 'Padaria',
-          imageUrl: 'https://i.postimg.cc/xTky2LvV/Image-1.png',
-        ),
-        Category(
-          name: 'Importados',
-          imageUrl: 'https://i.postimg.cc/Yq4fHQ6w/Image-2.png',
-        ),
-      ];
+      // simula uma resposta JSON vinda de uma API
+
+      for (var element in categoriesJson) {
+        categories.add(Category.fromJson(element));
+      }
       changeIsCategoriesLoading(false);
     });
   }
@@ -83,27 +51,6 @@ class HomeController extends ChangeNotifier {
     currentIndex = index;
     notifyListeners();
   }
-}
-
-class Product {
-  final String brand;
-  final String name;
-  final String imageUrl;
-  final double price;
-
-  Product({
-    required this.brand,
-    required this.name,
-    required this.imageUrl,
-    required this.price,
-  });
-}
-
-class Category {
-  final String name;
-  final String imageUrl;
-
-  Category({required this.name, required this.imageUrl});
 }
 
 // produtos
@@ -116,3 +63,42 @@ class Category {
 // https://i.postimg.cc/8PFBSLh2/Image-(1).png
 // https://i.postimg.cc/xTky2LvV/Image-1.png
 // https://i.postimg.cc/Yq4fHQ6w/Image-2.png
+
+final List<Map<String, dynamic>> productsJson = [
+  {
+    'brand': 'Natural da terra',
+    'name': 'Rabanete',
+    'imageUrl': 'https://i.postimg.cc/8Pt82Qmf/Image-1.png',
+    'price': 10.99,
+  },
+  {
+    'brand': 'Akatsu',
+    'name': 'Acerola',
+    'imageUrl': 'https://i.postimg.cc/BQMWr9B8/Image.png',
+    'price': 7.99,
+  },
+  {
+    'brand': 'Natural da terra',
+    'name': 'Cogumelo',
+    'imageUrl': 'https://i.postimg.cc/RVP8P1vw/Image-2.png',
+    'price': 12.19,
+  },
+  {
+    'brand': 'Natural da terra',
+    'name': 'Cogumelo',
+    'imageUrl': 'https://i.postimg.cc/RVP8P1vw/Image-2.png',
+    'price': 12.19,
+  },
+];
+final List<Map<String, dynamic>> categoriesJson = [
+  {'name': 'Frutas', 'imageUrl': 'https://i.postimg.cc/SNX7hc6F/Image.png'},
+  {
+    'name': 'Verduras',
+    'imageUrl': 'https://i.postimg.cc/8PFBSLh2/Image-(1).png',
+  },
+  {'name': 'Padaria', 'imageUrl': 'https://i.postimg.cc/xTky2LvV/Image-1.png'},
+  {
+    'name': 'Importados',
+    'imageUrl': 'https://i.postimg.cc/Yq4fHQ6w/Image-2.png',
+  },
+];
