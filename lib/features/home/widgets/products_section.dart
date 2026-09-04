@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:more_devs_do_zero/features/home/controllers/home_controller.dart';
 import 'package:more_devs_do_zero/features/home/models/product_model.dart';
 import 'package:more_devs_do_zero/features/home/widgets/product_card.dart';
 import 'package:more_devs_do_zero/shared/app_text_style.dart';
@@ -8,16 +7,21 @@ import 'package:skeletonizer/skeletonizer.dart';
 class ProductsSection extends StatelessWidget {
   const ProductsSection({
     super.key,
-    required this.state,
+    required this.isLoading,
+    required this.hasError,
     required this.products,
+    required this.onProductTap,
   });
 
-  final ProductsViewState state;
+  final bool isLoading;
+  final bool hasError;
   final List<Product> products;
+  final ValueChanged<Product> onProductTap;
 
   static final List<Product> _fakeProducts = List.filled(
     4,
     Product(
+      category: 'Categoria do produto',
       brand: 'Marca do produto',
       name: 'Nome do produto',
       imageUrl: '',
@@ -28,23 +32,24 @@ class ProductsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Produtos', style: AppTextStyle.title),
+              Text('Produtos', style: AppTextStyle.subTitle),
               Icon(Icons.chevron_right),
             ],
           ),
         ),
-        if (state == ProductsViewState.error)
+        const SizedBox(height: 8),
+        if (hasError)
           const Text('Problema ao resgatar produtos')
         else
           Builder(
             builder: (context) {
-              final isLoading = state == ProductsViewState.loading;
               final items = isLoading ? _fakeProducts : products;
 
               return Skeletonizer(
@@ -57,7 +62,16 @@ class ProductsSection extends StatelessWidget {
                   child: IntrinsicHeight(
                     child: Row(
                       children: items.map((Product product) {
-                        return ProductCard(product: product);
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: SizedBox(
+                            width: 150,
+                            child: ProductCard(
+                              product: product,
+                              onTap: () => onProductTap(product),
+                            ),
+                          ),
+                        );
                       }).toList(),
                     ),
                   ),

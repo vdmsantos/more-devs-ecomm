@@ -3,8 +3,10 @@ class Product {
   final String name;
   final String imageUrl;
   final double price;
+  final String category;
 
   Product({
+    required this.category,
     required this.brand,
     required this.name,
     required this.imageUrl,
@@ -17,6 +19,7 @@ class Product {
       name: json['name'],
       imageUrl: json['imageUrl'],
       price: (json['price'] as num).toDouble(),
+      category: json['category'],
     );
   }
 }

@@ -16,6 +16,28 @@ class LoginPage extends StatelessWidget {
 
   static const String route = '/login';
 
+  Future<void> _submitLogin(
+    BuildContext context,
+    LoginController controller,
+  ) async {
+    if (controller.isLoading || !controller.key.currentState!.validate()) {
+      return;
+    }
+
+    try {
+      await controller.handleLogin();
+      if (!context.mounted) return;
+      Navigator.popAndPushNamed(context, HomePage.route);
+    } on AuthException catch (e) {
+      if (!context.mounted) return;
+      AnimatedSnackBar.material(
+        e.message,
+        type: AnimatedSnackBarType.error,
+        mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+      ).show(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +85,9 @@ class LoginPage extends StatelessWidget {
                               },
                               hintText: '****************',
                               obscureText: true,
+                              textInputAction: TextInputAction.done,
+                              onFieldSubmitted: (_) =>
+                                  _submitLogin(context, controller),
                             ),
 
                             Row(
@@ -93,40 +118,41 @@ class LoginPage extends StatelessWidget {
                             AppElevatedButton(
                               label: 'Entrar',
                               isLoading: controller.isLoading,
-                              onPressed: () async {
-                                try {
-                                  await controller.handleLogin();
-                                  if (!context.mounted) return;
-                                  Navigator.popAndPushNamed(
-                                    context,
-                                    HomePage.route,
-                                  );
-                                } on AuthException catch (e) {
-                                  if (!context.mounted) return;
-                                  AnimatedSnackBar.material(
-                                    e.message,
-                                    type: AnimatedSnackBarType.error,
-                                    mobileSnackBarPosition:
-                                        MobileSnackBarPosition.bottom,
-                                  ).show(context);
-                                }
-                              },
+                              onPressed: () =>
+                                  _submitLogin(context, controller),
                               type: ButtonType.filled,
                             ),
                             SizedBox(height: 12),
                             AppElevatedButton(
                               label: 'Cadastrar',
-                              onPressed: () => {
-                                Navigator.pushNamed(context, SignupPage.route),
+                              onPressed: () async {
+                                final signupSucceeded =
+                                    await Navigator.push<bool>(
+                                      context,
+                                      MaterialPageRoute<bool>(
+                                        builder: (context) =>
+                                            const SignupPage(),
+                                      ),
+                                    );
+
+                                if (!context.mounted ||
+                                    signupSucceeded != true) {
+                                  return;
+                                }
+
+                                AnimatedSnackBar.material(
+                                  'Cadastro realizado com sucesso. Faça login com as credenciais inseridas.',
+                                  type: AnimatedSnackBarType.success,
+                                  mobileSnackBarPosition:
+                                      MobileSnackBarPosition.bottom,
+                                ).show(context);
                               },
                               type: ButtonType.outlined,
                             ),
                             SizedBox(height: 48),
                             //GestureDetector adiciona métodos de interação com usuario ex: onTap
                             GestureDetector(
-                              onTap: () {
-                                print('CLIQUEI NA LINHA');
-                              },
+                              onTap: null,
                               //RichText - Aninhar textos e modificar seu alinhamento
                               child: RichText(
                                 textAlign: TextAlign.center,

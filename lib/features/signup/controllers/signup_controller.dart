@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:more_devs_do_zero/features/auth/services/auth_service.dart';
 
 class SignupController {
+  SignupController(this._authService);
+
+  final AuthService _authService;
   final RegExp _emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
   TextEditingController emailController = TextEditingController();
@@ -33,10 +37,6 @@ class SignupController {
     if (isActiveCheckBox) {
       checkBoxError = false;
     }
-  }
-
-  Future<void> signUp() async {
-    await Future.delayed(Duration(seconds: 2));
   }
 
   String? validateEmail(String? value) {
@@ -80,4 +80,19 @@ class SignupController {
   bool get minSeisCaracteres => senhaController.text.length >= 6;
   bool get possuiCaractereEspecial =>
       senhaController.text.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+
+  void dispose() {
+    emailController.dispose();
+    nomeController.dispose();
+    senhaController.dispose();
+    confirmarSenhaController.dispose();
+  }
+
+  Future<void> signUp() {
+    return _authService.registerUser(
+      nome: nomeController.text,
+      email: emailController.text,
+      senha: senhaController.text,
+    );
+  }
 }

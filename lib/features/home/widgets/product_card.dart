@@ -4,28 +4,35 @@ import 'package:more_devs_do_zero/shared/app_text_style.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key, required this.product});
+  const ProductCard({super.key, required this.product, required this.onTap});
 
   final Product product;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      margin: EdgeInsets.symmetric(horizontal: 10),
+    return GestureDetector(
+      onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Skeleton.replace(
-              width: 150,
-              height: 150,
-              child: Image.network(
-                product.imageUrl,
-                height: 150,
-                width: 150,
-                fit: BoxFit.cover,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Image.network(
+                  product.imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const ColoredBox(
+                        color: Color(0xFFF2F2F2),
+                        child: Center(
+                          child: Icon(Icons.image_not_supported_outlined),
+                        ),
+                      ),
+                ),
               ),
             ),
           ),

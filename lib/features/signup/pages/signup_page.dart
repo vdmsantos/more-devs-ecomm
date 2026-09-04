@@ -1,10 +1,14 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:more_devs_do_zero/features/auth/services/auth_service.dart';
 import 'package:more_devs_do_zero/features/signup/controllers/signup_controller.dart';
 import 'package:more_devs_do_zero/shared/app_text_style.dart';
 import 'package:more_devs_do_zero/shared/widgets/app_check_box.dart';
 import 'package:more_devs_do_zero/shared/widgets/app_elevated_button.dart';
 import 'package:more_devs_do_zero/shared/widgets/app_required_password.dart';
 import 'package:more_devs_do_zero/shared/widgets/app_text_field.dart';
+import 'package:more_devs_do_zero/shared/exceptions/auth_exception.dart';
+import 'package:provider/provider.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -16,8 +20,15 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  SignupController signupController = SignupController();
+  SignupController? _signupController;
+  SignupController get signupController => _signupController!;
   final GlobalKey<FormState> key = GlobalKey<FormState>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _signupController ??= SignupController(context.read<AuthService>());
+  }
 
   Future<void> _handleSignup() async {
     final isFormValid = key.currentState!.validate();
@@ -32,12 +43,32 @@ class _SignupPageState extends State<SignupPage> {
         signupController.isLoading = true;
       });
 
-      await signupController.signUp();
+      try {
+        await signupController.signUp();
 
-      setState(() {
-        signupController.isLoading = false;
-      });
+        if (!mounted) return;
+        Navigator.pop(context, true);
+      } on AuthException catch (e) {
+        if (!mounted) return;
+        AnimatedSnackBar.material(
+          e.message,
+          type: AnimatedSnackBarType.error,
+          mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+        ).show(context);
+      } finally {
+        if (mounted) {
+          setState(() {
+            signupController.isLoading = false;
+          });
+        }
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    _signupController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -118,9 +149,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     Expanded(
                       child: GestureDetector(
-                        onTap: () {
-                          print('CLIQUEI NA LINHA');
-                        },
+                        onTap: null,
                         child: RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
