@@ -1,0 +1,32 @@
+REQUISITOS - FEATURE DE CARRINHO DE COMPRAS
+
+1. Ícone do carrinho
+1.1. Deve haver um ícone de carrinho na AppBar da Home.
+1.2. Deve haver um ícone de carrinho na AppBar da tela de produtos por categoria.
+1.3. Ao tocar no ícone, o usuário deve ser levado para a tela do Carrinho.
+1.4. O ícone deve exibir um badge (contador) com a quantidade total de itens no carrinho.
+1.5. O badge não deve ser exibido quando o carrinho estiver vazio.
+
+2. Adicionar produto ao carrinho (modal de detalhes do produto)
+2.1. O modal de detalhes do produto deve exibir imagem, nome, marca, descrição e preço.
+2.2. Quando o produto ainda não estiver no carrinho, deve ser exibido um botão "Adicionar no carrinho".
+2.3. Ao tocar em "Adicionar no carrinho", o produto deve ser adicionado ao carrinho com quantidade 1.
+2.4. Quando o produto já estiver no carrinho, o botão deve ser substituído por um contador de quantidade (stepper) com opções de incrementar e decrementar.
+
+3. Tela do carrinho
+3.1. Deve listar todos os produtos adicionados, exibindo imagem, nome, marca, preço/subtotal e quantidade.
+3.2. Deve permitir incrementar e decrementar a quantidade de cada item diretamente na lista.
+3.3. Deve exibir o valor total da compra (soma dos subtotais de todos os itens).
+3.4. Deve exibir um botão para continuar a compra (checkout).
+3.5. Quando o carrinho estiver vazio, deve exibir uma tela de estado vazio com mensagem informativa e botão para continuar comprando (voltar à Home).
+
+4. Remoção de item
+4.1. Ao decrementar a quantidade de um item que está com quantidade igual a 1, deve ser exibido um diálogo de confirmação antes de remover o item do carrinho.
+4.2. O diálogo deve informar o nome do produto que será removido.
+4.3. Se o usuário confirmar, o item deve ser removido do carrinho.
+4.4. Se o usuário cancelar, o item deve permanecer no carrinho com a mesma quantidade.
+
+5. Regras gerais do carrinho
+5.1. Cada produto deve aparecer apenas uma vez na lista do carrinho (produtos iguais somam quantidade, não duplicam linha).
+5.2. A quantidade mínima de um item no carrinho é 1 (abaixo disso, o item é removido).
+5.3. O estado do carrinho deve ser compartilhado entre todas as telas do app (Home, categoria, modal de detalhes e tela do carrinho).

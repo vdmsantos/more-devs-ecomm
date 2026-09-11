@@ -28,4 +28,18 @@ class AppTextStyle {
     fontWeight: FontWeight.w500,
     color: AppColors.green,
   );
+
+  static TextStyle subtitleGrey = TextStyle(fontSize: 16, color: AppColors.grey);
+
+  static TextStyle body = TextStyle(
+    fontSize: 14,
+    height: 1.4,
+    color: AppColors.black,
+  );
+
+  static TextStyle priceLarge = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    color: AppColors.black,
+  );
 }
