@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:more_devs_do_zero/features/cart/controllers/cart_controller.dart';
+import 'package:more_devs_do_zero/features/cart/pages/cart_page.dart';
 import 'package:more_devs_do_zero/features/home/controllers/products_by_category_controller.dart';
 import 'package:more_devs_do_zero/features/home/models/product_model.dart';
 import 'package:more_devs_do_zero/features/home/widgets/product_card.dart';
@@ -48,9 +50,40 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
         centerTitle: true,
         title: Text(widget.categoryName, style: AppTextStyle.title),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.shopping_cart_outlined),
+          Consumer<CartController>(
+            builder: (context, cart, child) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () =>
+                        Navigator.of(context).pushNamed(CartPage.route),
+                    icon: const Icon(Icons.shopping_cart_outlined),
+                  ),
+                  if (cart.itemCount > 0)
+                    Positioned(
+                      right: 6,
+                      top: 8,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: AppColors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 18,
+                          minHeight: 18,
+                        ),
+                        child: Text(
+                          '${cart.itemCount}',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyle.buttonLabel.copyWith(fontSize: 10),
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -125,9 +158,7 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
                     : controller.products;
 
                 if (!isLoading && products.isEmpty) {
-                  return const Center(
-                    child: Text('Nenhum produto encontrado'),
-                  );
+                  return const Center(child: Text('Nenhum produto encontrado'));
                 }
 
                 return Skeletonizer(

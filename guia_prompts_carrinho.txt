@@ -1,0 +1,80 @@
+GUIA DE PROMPTS - COMO PEDIR AJUDA PARA IMPLEMENTAR A FEATURE DE CARRINHO
+(sem pedir para a IA fazer tudo pronto)
+
+OBJETIVO
+Usar o arquivo requisitos_carrinho.txt como roteiro e treinar prompts que fazem
+a IA ensinar, revisar e destravar o aluno - não escrever a feature inteira.
+
+--------------------------------------------------------------------
+REGRAS DE OURO PARA UM BOM PROMPT
+--------------------------------------------------------------------
+1. Peça UM requisito por vez, nunca "implementa o carrinho todo".
+2. Diga o que você já tentou/já tem, não só o que falta.
+3. Peça para a IA explicar a abordagem ANTES de pedir código.
+4. Prefira "revise meu código" a "escreva o código".
+5. Peça exemplos pequenos ou pseudocódigo, não a solução final.
+6. Sempre valide entendendo o "porquê" da resposta, não só copiando.
+7. Depois de aplicar, rode o app e teste antes de pedir o próximo passo.
+
+Prompt ruim (evite):
+  "Implementa a feature de carrinho completa do requisitos_carrinho.txt"
+
+Prompt melhor:
+  "Estou implementando o requisito 2.3 (adicionar produto ao carrinho pelo
+  modal). Já tenho o modelo Product e um CartController vazio. Antes de
+  escrever código, me explica quais métodos e estado eu preciso pensar
+  para isso funcionar."
+
+--------------------------------------------------------------------
+PROMPTS POR REQUISITO (requisitos_carrinho.txt)
+--------------------------------------------------------------------
+
+[1] Ícone do carrinho na AppBar
+- "Quais opções eu tenho no Flutter para mostrar um badge numérico em cima
+  de um IconButton? Não escreve o código ainda, só me explica as opções."
+- "Fiz esse Stack com IconButton + Positioned para o badge do carrinho
+  [colar código]. Ele não some quando o carrinho está vazio. Me ajuda a
+  entender o que falta, sem reescrever tudo."
+- "Como faço o ícone do carrinho navegar para outra tela? Me explica o
+  conceito de rotas nomeadas no Flutter com um exemplo genérico."
+
+[2] Botão "Adicionar no carrinho" no modal
+- "No requisito 2.4, o botão precisa virar um stepper quando o produto já
+  está no carrinho. Que padrão de widget (condicional) faz isso de forma
+  simples? Me dá só a ideia, não o código completo."
+- "Escrevi essa condição pra alternar entre botão e stepper [colar trecho].
+  Faz sentido essa lógica ou tem um jeito mais simples?"
+
+[3] Tela do carrinho (lista, total, checkout)
+- "Quero calcular o total do carrinho somando o subtotal de cada item.
+  Isso deveria ficar no Controller ou na tela? Me explica o motivo."
+- "Minha lista de itens do carrinho não atualiza quando eu incremento a
+  quantidade [colar código do ListView]. Me ajuda a identificar o motivo
+  sem reescrever o widget inteiro."
+- "Como estruturo o estado vazio (EmptyCart) para reaproveitar em outras
+  telas? Me dá um exemplo de estrutura, não o widget final."
+
+[4] Diálogo de confirmação ao remover item
+- "Quero mostrar um diálogo de confirmação só quando a quantidade for 1 e
+  o usuário tentar decrementar. Como estruturo essa verificação? Me
+  explica o fluxo antes de eu escrever o código."
+- "Fiz essa função decrementCartItem [colar código]. Ela está removendo o
+  item mesmo quando eu cancelo o diálogo. O que devo revisar?"
+
+[5] Regras gerais (item único, quantidade mínima, estado compartilhado)
+- "Como garanto que o mesmo produto não seja duplicado na lista do
+  carrinho e some quantidade? Me explica a estratégia de comparação."
+- "O que significa 'estado compartilhado entre telas' na prática com
+  Provider/ChangeNotifier? Me dá um exemplo conceitual, não a implementação
+  da minha feature."
+
+--------------------------------------------------------------------
+QUANDO TRAVAR DE VERDADE
+--------------------------------------------------------------------
+Se depois de tentar sozinho o aluno ainda travar, o prompt ideal é:
+  "Aqui está meu código atual [colar] e o requisito que quero atender
+  [colar item do requisitos_carrinho.txt]. Está dando esse erro/esse
+  comportamento errado [descrever]. O que está errado na minha lógica?"
+
+Isso faz a IA agir como revisora/professora, apontando o problema e o
+raciocínio, em vez de substituir o código do aluno por uma solução pronta.
